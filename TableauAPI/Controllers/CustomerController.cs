@@ -73,7 +73,7 @@ namespace TableauAPI.Views.Home
 
             }
 
-            CustomerData cData = listedData.Where(x => x.CustomerName.ToLower() == custName).FirstOrDefault();
+            CustomerData cData = listedData.Where(x => x.CustomerName.ToLower() == custName.ToLower()).FirstOrDefault();
 
             string alexaResponse = "Customer " + custName + " is under account " + cData.AccountName + " and segment " + cData.Segment + " and " + cData.Industry + " industry. " +
                 "The product listed under this customer is " + cData.Product + ". The annual revenue of this customer is " + cData.AnnualRevenue;
@@ -110,7 +110,7 @@ namespace TableauAPI.Views.Home
                 listedData.Add(_newData);
 
             }
-            CustomerData cData = listedData.Where(x => x.CustomerName.ToLower() == custName).FirstOrDefault();
+            CustomerData cData = listedData.Where(x => x.CustomerName.ToLower() == custName.ToLower()).FirstOrDefault();
             if(parameter.ToLower() == "annual revenue")
             {
                  alexaResponse = "The annual revenue of this customer is " + cData.AnnualRevenue;
