@@ -18,10 +18,10 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
-    <IISExpressSSLPort />
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
-    <IISExpressUseClassicPipelineMode />
+    <IISExpressSSLPort>62500</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -45,6 +45,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -182,12 +188,43 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\DynamicController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\SalesController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="DataContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201810100630571__init.cs" />
+    <Compile Include="Migrations\201810100630571__init.Designer.cs">
+      <DependentUpon>201810100630571__init.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810100643533__init1.cs" />
+    <Compile Include="Migrations\201810100643533__init1.Designer.cs">
+      <DependentUpon>201810100643533__init1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810100650348__init2.cs" />
+    <Compile Include="Migrations\201810100650348__init2.Designer.cs">
+      <DependentUpon>201810100650348__init2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810180957059__newTable.cs" />
+    <Compile Include="Migrations\201810180957059__newTable.Designer.cs">
+      <DependentUpon>201810180957059__newTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904031025189_init2.cs" />
+    <Compile Include="Migrations\201904031025189_init2.Designer.cs">
+      <DependentUpon>201904031025189_init2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908221016347_init.cs" />
+    <Compile Include="Migrations\201908221016347_init.Designer.cs">
+      <DependentUpon>201908221016347_init.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\SalesSkill.cs" />
+    <Compile Include="Models\AlexaSkill.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Controllers\CustomerController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
@@ -198,6 +235,10 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Image\logo.jpg" />
+    <Content Include="Image\Proximous-Final-Logo-Header.png" />
+    <Content Include="index.html" />
+    <Content Include="Script.txt" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
@@ -222,13 +263,37 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Properties\PublishProfiles\Alexa4Tableau - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\index.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Web.config" />
+    <Content Include="SpeechToText\annyang.js" />
+    <Content Include="SpeechToText\annyang.min.js" />
+    <Content Include="SpeechToText\audioinput.js" />
+    <Content Include="SpeechToText\chrome.html" />
+    <Content Include="SpeechToText\dynamic-index.css" />
+    <Content Include="SpeechToText\dynamic-index.html" />
+    <Content Include="SpeechToText\dynamic-index.js" />
+    <Content Include="SpeechToText\dynamic-tableau.js" />
+    <Content Include="SpeechToText\index.1.html" />
+    <Content Include="SpeechToText\mic-animate.gif" />
+    <Content Include="SpeechToText\mic-slash.gif" />
+    <Content Include="SpeechToText\mic.gif" />
+    <Content Include="SpeechToText\index.html" />
+    <Content Include="SpeechToText\Proximous-Final-Logo-Header.png" />
+    <Content Include="SpeechToText\responsivevoice.js" />
+    <Content Include="SpeechToText\speech-input.js" />
+    <Content Include="SpeechToText\speechkitt-demo.gif" />
+    <Content Include="SpeechToText\styles.css" />
+    <Content Include="SpeechToText\tableau-data.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -242,10 +307,12 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\SalesDashboard.cshtml" />
+    <Content Include="Views\Home\DynamicDashboard.cshtml" />
+    <Content Include="Views\Home\CustomerDashboard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -275,6 +342,26 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201810100630571__init.resx">
+      <DependentUpon>201810100630571__init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810100643533__init1.resx">
+      <DependentUpon>201810100643533__init1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810100650348__init2.resx">
+      <DependentUpon>201810100650348__init2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810180957059__newTable.resx">
+      <DependentUpon>201810180957059__newTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904031025189_init2.resx">
+      <DependentUpon>201904031025189_init2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908221016347_init.resx">
+      <DependentUpon>201908221016347_init.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

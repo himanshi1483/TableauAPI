@@ -1,0 +1,25 @@
+{
+  "name": "tableau",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ask-sdk": "^2.0.10",
+    "ask-sdk-core": "^2.0.10",
+    "ask-sdk-model": "^1.6.0",
+    "async": "^2.6.1",
+    "aws-sdk": "^2.327.0",
+    "cheerio": "^1.0.0-rc.2",
+    "express": "^4.16.3",
+    "mssql": "^4.2.1",
+    "q": "^1.5.1",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2",
+    "tedious": "^2.6.4"
+  }
+}
