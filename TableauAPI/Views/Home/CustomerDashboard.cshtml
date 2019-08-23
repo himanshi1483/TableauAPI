@@ -128,12 +128,12 @@
 
     //restructure the data and build something with it
     function prepareTable(name, table) {
-        var rowNum = 100;
+        var rowNum = 1000;
         //the data returned from the tableau API
         var columns = table.getColumns();
         var data = table.getData();
         console.log(table.getData());
-        //console.log(data[0]);
+        console.log(data[0]);
 
         // //convert to field:values convention
         function reduceToObjects(cols, data) {

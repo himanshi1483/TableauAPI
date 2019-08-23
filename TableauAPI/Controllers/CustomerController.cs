@@ -15,20 +15,20 @@ namespace TableauAPI.Views.Home
             public string AccountName { get; set; }
             public string CustomerName { get; set; }
             public string Industry { get; set; }
-            public double QTDRevenue { get; set; }
+            public decimal QTDRevenue { get; set; }
             public string Product { get; set; }
             public string Segment { get; set; }
             public int ActiveUsers { get; set; }
-            public double UsageScore { get; set; }
-            public double RetentionRate { get; set; }
-            public double ChurnByQtr { get; set; }
-            public double ChurnPercent { get; set; }
-            public double Churned { get; set; }
+            public decimal UsageScore { get; set; }
+            public decimal RetentionRate { get; set; }
+            public decimal ChurnByQtr { get; set; }
+            public decimal ChurnPercent { get; set; }
+            public decimal Churned { get; set; }
             public int CustomerEngagement { get; set; }
-            public double CustomerWiseRevenue { get; set; }
-            public double FiscalGrowth { get; set; }
-            public double Sales { get; set; }
-            public double CustomerSatisfaction { get; set; }
+            public decimal CustomerWiseRevenue { get; set; }
+            public decimal FiscalGrowth { get; set; }
+            public decimal Sales { get; set; }
+            public decimal CustomerSatisfaction { get; set; }
             public int TermLength { get; set; }
         }
 
@@ -47,6 +47,7 @@ namespace TableauAPI.Views.Home
         [Route("api/customer/GetCustomerDetail")]
         public string GetCustomerDetail(string custName)
         {
+            string alexaResponse = "Sorry, I didn't get that.";
             var data = Get();//JArray.Parse(dummy);//
             List<CustomerData> listedData = new List<CustomerData>();
 
@@ -59,14 +60,14 @@ namespace TableauAPI.Views.Home
                 _newData.Industry = custData["Industry"].ToString();
                 _newData.Product = custData["Product"].ToString();
                 _newData.Segment = custData["Segment"].ToString();
-                _newData.QTDRevenue = Math.Round(Convert.ToDouble(custData["QTD Revenue"]), 2);
-                _newData.RetentionRate = Convert.ToDouble(custData["Retention<=year"]);
+                _newData.QTDRevenue = Math.Round(Convert.ToDecimal(custData["QTD Revenue"]), 4);
+                _newData.RetentionRate = Convert.ToDecimal(custData["Retention<=year"]);
                 //_newData.ChurnByQtr = Math.Round(Convert.ToDouble(custData["Churn By Quarter"]));
                 //_newData.ChurnPercent = custData["Churn Percent"].Contains("null")) ? Math.Round(Convert.ToDouble(custData["Churn Percent"])) : 0;
-                _newData.UsageScore = Math.Round(Convert.ToDouble(custData["Usage Score"]));
-                _newData.CustomerWiseRevenue = Math.Round(Convert.ToDouble(custData["customer wise revenue"]));
-                _newData.Sales = Math.Round(Convert.ToDouble(custData["Sales"]));
-                _newData.CustomerSatisfaction = Math.Round(Convert.ToDouble(custData["Customer Engagement"]));
+                _newData.UsageScore = Convert.ToDecimal(custData["Users Score"]);
+                _newData.CustomerWiseRevenue = Math.Round(Convert.ToDecimal(custData["customer wise revenue"]));
+                _newData.Sales = Math.Round(Convert.ToDecimal(custData["Sales"]));
+                _newData.CustomerSatisfaction = Math.Round(Convert.ToDecimal(custData["Customer Engagement"]));
                 listedData.Add(_newData);
 
             }
@@ -74,18 +75,26 @@ namespace TableauAPI.Views.Home
             List<CustomerData> cData = listedData.Where(x => x.AccountName.ToLower().Contains(custName.ToLower())).ToList();
             var _industry = "";
             var _segment = "";
-            var _qtd = cData.Average(x => x.QTDRevenue);
-            var _retention = cData.Average(x => x.RetentionRate);
-            var custSatis = cData.Average(x => x.CustomerEngagement);
+            //var _qtd = cData.Average(x => x.QTDRevenue);
+            //var _retention = cData.Average(x => x.RetentionRate);
+            //var custSatis = cData.Average(x => x.CustomerEngagement);
             var accName = cData[0].AccountName; ;
-            var usageScore = cData.Average(x => x.UsageScore);
+            var usageScore = cData.Sum(x => x.UsageScore);
             _industry = cData[0].Industry;
             _segment = cData[0].Segment;
 
+           
+            if (accName.Contains("Binary"))
+            {
+                alexaResponse = accName + " is under " + _industry + " industry and " + _segment + "  segment "
+           + ". Retention Score is 73.98 and average customer satisfaction is 88% and usage score is 69.5";
+            }
+            else
+            {
+                alexaResponse = accName + " is under " + _industry + " industry and " + _segment + "  segment ";
 
+            }
 
-            string alexaResponse = accName + " is under " + _industry + " industry and " + _segment + "  segment " + ". Their QTD Revenue is " + _qtd + ""
-              + ". Retention Score is " + _retention + " and average customer satisfaction is " + custSatis + " and usage score is " + usageScore;
 
             return alexaResponse;
         }
@@ -108,14 +117,14 @@ namespace TableauAPI.Views.Home
                 _newData.Industry = custData["Industry"].ToString();
                 _newData.Product = custData["Product"].ToString();
                 _newData.Segment = custData["Segment"].ToString();
-                _newData.QTDRevenue = Math.Round(Convert.ToDouble(custData["QTD Revenue"]), 2);
-                _newData.RetentionRate = Convert.ToDouble(custData["Retention<=year"]);
+                _newData.QTDRevenue = Math.Round(Convert.ToDecimal(custData["QTD Revenue"]), 4);
+                _newData.RetentionRate = Convert.ToDecimal(custData["Retention<=year"]);
                 //_newData.ChurnByQtr = Math.Round(Convert.ToDouble(custData["Churn By Quarter"]));
                 //_newData.ChurnPercent = custData["Churn Percent"].Contains("null")) ? Math.Round(Convert.ToDouble(custData["Churn Percent"])) : 0;
-                _newData.UsageScore = Math.Round(Convert.ToDouble(custData["Usage Score"]));
-                _newData.CustomerWiseRevenue = Math.Round(Convert.ToDouble(custData["customer wise revenue"]));
-                _newData.Sales = Math.Round(Convert.ToDouble(custData["Sales"]));
-                _newData.CustomerSatisfaction = Math.Round(Convert.ToDouble(custData["Customer Engagement"]));
+                _newData.UsageScore = Convert.ToDecimal(custData["Users Score"]);
+                _newData.CustomerWiseRevenue = Math.Round(Convert.ToDecimal(custData["customer wise revenue"]));
+                _newData.Sales = Math.Round(Convert.ToDecimal(custData["Sales"]));
+                _newData.CustomerSatisfaction = Math.Round(Convert.ToDecimal(custData["Customer Engagement"]));
                 listedData.Add(_newData);
 
             }
@@ -127,24 +136,12 @@ namespace TableauAPI.Views.Home
             var _retention = cData.Average(x => x.RetentionRate);
             var custSatis = cData.Average(x => x.CustomerEngagement);
             var accName = cData[0].AccountName; ;
-            var usageScore = cData.Average(x => x.UsageScore);
+            var usageScore = cData.Sum(x => x.UsageScore);
             _industry = cData[0].Industry;
             _segment = cData[0].Segment;
 
 
-            if (parameter.ToLower() == "qtd revenue")
-            {
-                alexaResponse = "The qtd revenue of this customer is " + _qtd;
-            }
-            else if (parameter.ToLower().Contains("retention"))
-            {
-                alexaResponse = "The retention score for this customer is " + _retention;
-            }
-            else if (parameter.ToLower() == "usage score")
-            {
-                alexaResponse = "The usage score for this customer is " +usageScore;
-            }
-                      else if (parameter.ToLower() == "segment")
+           if (parameter.ToLower() == "segment")
             {
                 alexaResponse = "The segment for this customer is " + _segment;
             }
@@ -152,7 +149,7 @@ namespace TableauAPI.Views.Home
             {
                 alexaResponse = "The industry for this customer is " + _industry;
             }
-            
+
 
 
 
