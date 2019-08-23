@@ -63,7 +63,7 @@
         $("#vizContainer").append("<div id='tableau_visualization'></div>");
         var containerDiv = document.getElementById("tableau_visualization"),
             // url = $("#tableauURL").val(), 
-            url = "https://us-west-2b.online.tableau.com/t/proximous/views/Customer360Dashboard/Customer360Metrics?iframeSizedToWindow=true&:embed=y&:showAppBanner=false&:display_count=no&:showVizHome=no&:origin=viz_share_link"
+            url = "https://us-west-2b.online.tableau.com/t/proximous/views/Customer360Dashboard/Customer360Metrics?iframeSizedToWindow=true&:embed=y&:showAppBanner=false&:origin=viz_share_link&:jsdebug=y&:display_count=no&:showVizHome=no"
             options = {
                 hideTabs: true,
                 hideToolbar: true,
@@ -79,7 +79,7 @@
     //when viz is loaded (onFirstInteractive), request data
     function getVizData() {
         options = {
-            maxRows: 500, // Max rows to return. Use 0 to return all rows
+            maxRows: 1000, // Max rows to return. Use 0 to return all rows
             ignoreAliases: false,
             ignoreSelection: true,
             includeAllColumns: false

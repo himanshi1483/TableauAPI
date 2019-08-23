@@ -2,9 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Web.Http;
-using static TableauAPI.Controllers.SalesController;
 
 namespace TableauAPI.Views.Home
 {
@@ -17,12 +15,12 @@ namespace TableauAPI.Views.Home
             public string AccountName { get; set; }
             public string CustomerName { get; set; }
             public string Industry { get; set; }
-            public string OpportunutyStage { get; set; }
+            public double QTDRevenue { get; set; }
             public string Product { get; set; }
             public string Segment { get; set; }
             public int ActiveUsers { get; set; }
-            public double AnnualRevenue { get; set; }
-            public double ARPU { get; set; }
+            public double UsageScore { get; set; }
+            public double RetentionRate { get; set; }
             public double ChurnByQtr { get; set; }
             public double ChurnPercent { get; set; }
             public double Churned { get; set; }
@@ -30,7 +28,7 @@ namespace TableauAPI.Views.Home
             public double CustomerWiseRevenue { get; set; }
             public double FiscalGrowth { get; set; }
             public double Sales { get; set; }
-            public double TotalAmount { get; set; }
+            public double CustomerSatisfaction { get; set; }
             public int TermLength { get; set; }
         }
 
@@ -61,23 +59,34 @@ namespace TableauAPI.Views.Home
                 _newData.Industry = custData["Industry"].ToString();
                 _newData.Product = custData["Product"].ToString();
                 _newData.Segment = custData["Segment"].ToString();
-                _newData.AnnualRevenue = Math.Round(Convert.ToDouble(custData["Annual Revenue"]),2);
-                _newData.ARPU = Convert.ToDouble(custData["ARPU"]);
+                _newData.QTDRevenue = Math.Round(Convert.ToDouble(custData["QTD Revenue"]), 2);
+                _newData.RetentionRate = Convert.ToDouble(custData["Retention<=year"]);
                 //_newData.ChurnByQtr = Math.Round(Convert.ToDouble(custData["Churn By Quarter"]));
-                //_newData.ChurnPercent = Math.Round(Convert.ToDouble(custData["Churn Percent"]));
-                //_newData.Churned = Math.Round(Convert.ToDouble(custData["Churned"]));
+                //_newData.ChurnPercent = custData["Churn Percent"].Contains("null")) ? Math.Round(Convert.ToDouble(custData["Churn Percent"])) : 0;
+                _newData.UsageScore = Math.Round(Convert.ToDouble(custData["Usage Score"]));
                 _newData.CustomerWiseRevenue = Math.Round(Convert.ToDouble(custData["customer wise revenue"]));
                 _newData.Sales = Math.Round(Convert.ToDouble(custData["Sales"]));
-                _newData.TotalAmount = Math.Round(Convert.ToDouble(custData["Total Amount"]));
+                _newData.CustomerSatisfaction = Math.Round(Convert.ToDouble(custData["Customer Engagement"]));
                 listedData.Add(_newData);
 
             }
 
-            CustomerData cData = listedData.Where(x => x.CustomerName.ToLower() == custName.ToLower()).FirstOrDefault();
+            List<CustomerData> cData = listedData.Where(x => x.AccountName.ToLower().Contains(custName.ToLower())).ToList();
+            var _industry = "";
+            var _segment = "";
+            var _qtd = cData.Average(x => x.QTDRevenue);
+            var _retention = cData.Average(x => x.RetentionRate);
+            var custSatis = cData.Average(x => x.CustomerEngagement);
+            var accName = cData[0].AccountName; ;
+            var usageScore = cData.Average(x => x.UsageScore);
+            _industry = cData[0].Industry;
+            _segment = cData[0].Segment;
 
-            string alexaResponse = "Customer " + custName + " is under account " + cData.AccountName + " and segment " + cData.Segment + " and " + cData.Industry + " industry. " +
-                "The product listed under this customer is " + cData.Product + ". The annual revenue of this customer is " + cData.AnnualRevenue;
-           
+
+
+            string alexaResponse = accName + " is under " + _industry + " industry and " + _segment + "  segment " + ". Their QTD Revenue is " + _qtd + ""
+              + ". Retention Score is " + _retention + " and average customer satisfaction is " + custSatis + " and usage score is " + usageScore;
+
             return alexaResponse;
         }
 
@@ -99,54 +108,51 @@ namespace TableauAPI.Views.Home
                 _newData.Industry = custData["Industry"].ToString();
                 _newData.Product = custData["Product"].ToString();
                 _newData.Segment = custData["Segment"].ToString();
-                _newData.AnnualRevenue = Math.Round(Convert.ToDouble(custData["Annual Revenue"]), 2);
-                _newData.ARPU = Convert.ToDouble(custData["ARPU"]);
+                _newData.QTDRevenue = Math.Round(Convert.ToDouble(custData["QTD Revenue"]), 2);
+                _newData.RetentionRate = Convert.ToDouble(custData["Retention<=year"]);
                 //_newData.ChurnByQtr = Math.Round(Convert.ToDouble(custData["Churn By Quarter"]));
-                //_newData.ChurnPercent = Math.Round(Convert.ToDouble(custData["Churn Percent"]));
-                //_newData.Churned = Math.Round(Convert.ToDouble(custData["Churned"]));
+                //_newData.ChurnPercent = custData["Churn Percent"].Contains("null")) ? Math.Round(Convert.ToDouble(custData["Churn Percent"])) : 0;
+                _newData.UsageScore = Math.Round(Convert.ToDouble(custData["Usage Score"]));
                 _newData.CustomerWiseRevenue = Math.Round(Convert.ToDouble(custData["customer wise revenue"]));
                 _newData.Sales = Math.Round(Convert.ToDouble(custData["Sales"]));
-                _newData.TotalAmount = Math.Round(Convert.ToDouble(custData["Total Amount"]));
+                _newData.CustomerSatisfaction = Math.Round(Convert.ToDouble(custData["Customer Engagement"]));
                 listedData.Add(_newData);
 
             }
-            CustomerData cData = listedData.Where(x => x.CustomerName.ToLower() == custName.ToLower()).FirstOrDefault();
-            if(parameter.ToLower() == "annual revenue")
+
+            List<CustomerData> cData = listedData.Where(x => x.AccountName.ToLower().Contains(custName.ToLower())).ToList();
+            var _industry = "";
+            var _segment = "";
+            var _qtd = cData.Average(x => x.QTDRevenue);
+            var _retention = cData.Average(x => x.RetentionRate);
+            var custSatis = cData.Average(x => x.CustomerEngagement);
+            var accName = cData[0].AccountName; ;
+            var usageScore = cData.Average(x => x.UsageScore);
+            _industry = cData[0].Industry;
+            _segment = cData[0].Segment;
+
+
+            if (parameter.ToLower() == "qtd revenue")
             {
-                 alexaResponse = "The annual revenue of this customer is " + cData.AnnualRevenue;
+                alexaResponse = "The qtd revenue of this customer is " + _qtd;
             }
-            else if (parameter.ToLower().Contains("sales"))
+            else if (parameter.ToLower().Contains("retention"))
             {
-                alexaResponse = "The sales for this customer is " + cData.Sales;
+                alexaResponse = "The retention score for this customer is " + _retention;
             }
-            else if (parameter.ToLower() == "total amount")
+            else if (parameter.ToLower() == "usage score")
             {
-                alexaResponse = "The total amount for this customer is " + cData.TotalAmount;
+                alexaResponse = "The usage score for this customer is " +usageScore;
             }
-            else if (parameter.ToLower() == "ARPU")
+                      else if (parameter.ToLower() == "segment")
             {
-                alexaResponse = "The ARPU for this customer is " + cData.ARPU;
-            }
-            else if (parameter.ToLower() == "customer wise revenue")
-            {
-                alexaResponse = "The customer wise revenue for this customer is " + cData.CustomerWiseRevenue;
-            }
-            else if (parameter.ToLower() == "segment")
-            {
-                alexaResponse = "The segment for this customer is " + cData.Segment;
+                alexaResponse = "The segment for this customer is " + _segment;
             }
             else if (parameter.ToLower() == "industry")
             {
-                alexaResponse = "The industry for this customer is " + cData.Industry;
+                alexaResponse = "The industry for this customer is " + _industry;
             }
-            else if (parameter.ToLower() == "product")
-            {
-                alexaResponse = "The product for this customer is " + cData.Product;
-            }
-            else if (parameter.ToLower().Contains("account"))
-            {
-                alexaResponse = "The account for this customer is " + cData.AccountName;
-            }
+            
 
 
 
