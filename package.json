@@ -12,7 +12,7 @@
     "ask-sdk": "^2.0.10",
     "ask-sdk-core": "^2.0.10",
     "ask-sdk-model": "^1.6.0",
-    "async": "^2.6.1",
+    "async": "^3.2.2",
     "aws-sdk": "^2.327.0",
     "cheerio": "^1.0.0-rc.2",
     "express": "^4.16.3",
